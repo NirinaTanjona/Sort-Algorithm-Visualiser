@@ -2,7 +2,10 @@
 
 set -xe
 
-CFLAGS="-Wall -Wextra -ggdb"
+CFLAGS="-O3 -Wall -Wextra -ggdb -I./  -I./raylib/include/"
+LIBS="./raylib/lib/libraylib.a -lm"
 
+mkdir -p ./build/
 
-clang $CFLAGS -I./raylib/raylib-5.0_linux_amd64/src/ -o  AlgoVisualizer main.c ./raylib/raylib-5.0_linux_amd64/src/libraylib.a -lm
+clang $CFLAGS -o ./build/visu ./SortVisualizer.c $LIBS && ./build/visu
+
