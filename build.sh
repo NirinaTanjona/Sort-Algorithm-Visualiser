@@ -2,10 +2,25 @@
 
 set -xe
 
-CFLAGS="-O3 -Wall -Wextra -ggdb -I./  -I./raylib/include/"
-LIBS="./raylib/lib/libraylib.a -lm"
+cd ./lib/
+
+CFLAGS="-Wall -Wextra -I ../include"
+clang -c *.c $CFLAGS
+ar rcs libalgo.a *.o
+cd ../
+
+
+
+CFLAGS="-O3 -Wall -Wextra -ggdb -I ./include  -I ./raylib/include"
+LIBS="./raylib/lib/libraylib.so -lraylib -L./lib -lalgo -lm -ldl -lpthread"
 
 mkdir -p ./build/
 
-clang $CFLAGS -o ./build/visu ./SortVisualizer.c $LIBS && ./build/visu
+clang  -o ./build/visu ./sort_visualizer.c $CFLAGS $LIBS
+
+cd ./build/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../raylib/lib/
+
+./visu
+
 
