@@ -1,12 +1,15 @@
-# nn.h
+# Sort Algorithm Visualiser
 
-Simple stb-style head-only library for Neural Networks. Created for educational purposes. Not suitable for production.
+Simple Algorithm Visualiser written in C using Raylib library. Created for educational purposes.
 
-![thumbnail](./thumbnail.png)
+Merge Sort
+![Merge Sort](./assets/mergeSort.webm)
+
+Heap Sort
+![Heap Sort](./assets/heapSort.webm)
 
 ## Quick Start
 
 ```console
 $ ./build.sh
-$ ./build/demos/img2nn ./mnist/training/8/10057.png ./mnist/training/6/10032.png
 ```
