@@ -3,10 +3,10 @@
 Simple Algorithm Visualiser written in C using Raylib library. Created for educational purposes.
 
 Merge Sort
-![Merge Sort](./assets/mergeSort.webm)
+![Merge Sort](./assets/mergeSort.gif)
 
 Heap Sort
-![Heap Sort](./assets/heapSort.webm)
+![Heap Sort](./assets/heapSort.gif)
 
 ## Quick Start
 
