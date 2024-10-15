@@ -42,7 +42,7 @@ void heapify(size_t arr[], int n)
             while (arr[j] > arr[(j - 1) / 2])
             {
                 swap(&arr[j], &arr[(j - 1) / 2]);
-                Wait(0.2);
+                Wait(0.1);
                 j = (j - 1) / 2;
             }
         }
@@ -53,7 +53,7 @@ void* heapSort(void* arg)
     Array *data = arg;
     size_t *arr = data->items;
     int n = data->count;
-    float sec = 0.2;
+    float sec = 0.1;
     heapify(arr, n);
     for (int i = n - 1; i > 0; --i)
     {

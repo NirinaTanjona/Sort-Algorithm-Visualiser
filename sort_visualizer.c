@@ -5,9 +5,9 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
-#define                                                DEFAULT_MIN 1
-#define                                             DEFAULT_MAX 100
-#define                                              DEFAULT_SIZE 100
+#define                                                 DEFAULT_MIN 1
+#define                                               DEFAULT_MAX 180
+#define                                              DEFAULT_SIZE 200
 
 
 typedef enum
@@ -18,6 +18,7 @@ typedef enum
     RADIXSORT
 } AlgoType;
 
+AlgoType algo;
 
 #define da_append(xs, x)\
     do {\
@@ -53,9 +54,9 @@ void customSamples(Array *xs, size_t min, size_t max, size_t size)
 }
 
 
-void* draw(void* arg)
+void draw(Array *arr)
 {
-    Array *arr = arg;
+    // Array *arr = arg;
 
     const int screenWidth = 800;
     const int screenHeight = 600;
@@ -82,48 +83,36 @@ void* draw(void* arg)
     CloseWindow();
 }
 
+void error_exit(char *s)
+{
+    fprintf(stderr, "%s", s);
+    exit(EXIT_FAILURE);
+}
+
 
 int main(void)
 {
     int err;
     pthread_t t_heapsort, t_bubblesort, t_mergesort, tdraw, t_radixsort;
-    void *tret;
-
     AlgoType algo;
+    algo = RADIXSORT;
 
     Array arr = {0};
     init(&arr);
 
-    algo = RADIXSORT ;
-
-    err = pthread_create(&tdraw, NULL, draw, &arr);
-    if (err != 0) printf("Cannot create thread");
-    switch(algo)
-    {
-        case HEAPSORT   : err = pthread_create(&t_heapsort, NULL, heapSort, &arr);
-                          if (err != 0) printf("Cannot create thread");
-                          err = pthread_join(t_heapsort, &tret);
-                          if (err != 0) printf("Cannot join thread");
-                          break;
-
-        case MERGESORT  : err = pthread_create(&t_mergesort, NULL, mergeSort, &arr);
-                          if (err != 0) printf("Cannot create thread");
-                          err = pthread_join(t_mergesort, &tret);
-                          if (err != 0) printf("Cannot join thread");
-                          break;
-
-        case BUBBLESORT : err = pthread_create(&t_bubblesort, NULL, bubbleSort, &arr);
-                          if (err != 0) printf("Cannot create thread");
-                          err = pthread_join(t_bubblesort, &tret);
-                          if (err != 0) printf("Cannot join thread");
-                          break;
-
-        case RADIXSORT : err = pthread_create(&t_radixsort, NULL, radixSort, &arr);
-                          if (err != 0) printf("Cannot create thread");
-                          err = pthread_join(t_radixsort, &tret);
-                          if (err != 0) printf("Cannot join thread");
-                          break;
+    switch(algo) {
+        case MERGESORT   : err = pthread_create(&t_mergesort, NULL, mergeSort, &arr); if (err != 0) error_exit("Cannot create thread"); break;
+        case HEAPSORT    : err = pthread_create(&t_heapsort, NULL, heapSort, &arr); if (err != 0) error_exit("Cannot create thread"); break;
+        case BUBBLESORT  : err = pthread_create(&t_bubblesort, NULL, bubbleSort, &arr); if (err != 0) error_exit("Cannot create thread"); break;
+        case RADIXSORT   : err = pthread_create(&t_radixsort, NULL, radixSort, &arr); if (err != 0) error_exit("Cannot create thread"); break;
     }
-    err = pthread_join(tdraw, &tret);
-    if (err != 0) printf("Cannot join thread");
+
+    draw(&arr);
+
+    switch(algo) {
+        case MERGESORT   : err = pthread_join(t_mergesort, NULL); if (err != 0) error_exit("Cannot join thread"); break;
+        case HEAPSORT    : err = pthread_join(t_heapsort, NULL); if (err != 0) error_exit("Cannot join thread"); break;
+        case BUBBLESORT  : err = pthread_join(t_bubblesort, NULL); if (err != 0) error_exit("Cannot join thread"); break;
+        case RADIXSORT   : err = pthread_join(t_radixsort, NULL); if (err != 0) error_exit("Cannot join thread"); break;
+    }
 }
