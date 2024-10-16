@@ -5,9 +5,9 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
-#define                                                 DEFAULT_MIN 1
-#define                                               DEFAULT_MAX 180
-#define                                              DEFAULT_SIZE 200
+#define                                                         DEFAULT_MIN 1
+#define                                                       DEFAULT_MAX 180
+#define                                                      DEFAULT_SIZE 200
 
 
 typedef enum
@@ -56,31 +56,6 @@ void customSamples(Array *xs, size_t min, size_t max, size_t size)
 
 void draw(Array *arr)
 {
-    // Array *arr = arg;
-
-    const int screenWidth = 800;
-    const int screenHeight = 600;
-
-    InitWindow(screenWidth, screenHeight, "Raylib Window");
-
-    int w = GetRenderWidth();
-    int h = GetRenderHeight();
-    int cell_width = (float)w / arr->count;
-
-    SetTargetFPS(60);
-    while(!WindowShouldClose())
-    {
-        BeginDrawing();
-
-            for (size_t i = 0; i < arr->count; ++i) {
-                float t = (float)arr->items[i] / DEFAULT_MAX;
-                DrawRectangle(i*cell_width, h - h/1.2*t, cell_width-2, h*t, BLUE);
-            }
-            ClearBackground(CLITERAL(Color) {0x18, 0x18, 0x18, 0xFF});
-
-        EndDrawing();
-    }
-    CloseWindow();
 }
 
 void error_exit(char *s)
@@ -107,7 +82,29 @@ int main(void)
         case RADIXSORT   : err = pthread_create(&t_radixsort, NULL, radixSort, &arr); if (err != 0) error_exit("Cannot create thread"); break;
     }
 
-    draw(&arr);
+    const int screenWidth = 800;
+    const int screenHeight = 600;
+
+    InitWindow(screenWidth, screenHeight, "Raylib Window");
+
+    int w = GetRenderWidth();
+    int h = GetRenderHeight();
+    int cell_width = (float)w / arr.count;
+
+    SetTargetFPS(60);
+    while(!WindowShouldClose())
+    {
+        BeginDrawing();
+
+            for (size_t i = 0; i < arr.count; ++i) {
+                float t = (float)arr.items[i] / DEFAULT_MAX;
+                DrawRectangle(i*cell_width, h - h/1.2*t, cell_width-2, h*t, BLUE);
+            }
+            ClearBackground(CLITERAL(Color) {0x18, 0x18, 0x18, 0xFF});
+
+        EndDrawing();
+    }
+    CloseWindow();
 
     switch(algo) {
         case MERGESORT   : err = pthread_join(t_mergesort, NULL); if (err != 0) error_exit("Cannot join thread"); break;
